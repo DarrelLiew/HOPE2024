@@ -3,54 +3,24 @@ import { useState } from "react";
 import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import styles from "../constants/style"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigation()
-  const createProfile = async(response) =>{
-    db().ref(`/users/${response.user.uid}`).set({username})
-  }
-  const registerAndGoToMainFlow = async() =>{
-    if (username&&password){
-      try{
-        const response = await auth().createUserWithEmailAndPassword(
-        username,
-        password
-      )
+
+  const checkLoginValid = async() =>{
+    console.log(process.env.EXPO_PUBLIC_BACKEND_URL)
+    axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/login`, {username,password}).then((res)=> console.log(res.data)).catch(e=> console.log(e))
     
-        if(response.user){
-          await createProfile(response)
-          nav.replace("Daily Prayer");
-        }
-      }catch(e) {
-        Alert.alert("wrong")
-      }
-  }}
-
-  const GoToHomePage = async() =>{
-    if(username && password){
-      try {
-        const response = await auth().signInWithEmailAndPassword(
-          username,
-          password
-        )
-        if (response.user) {
-          
-          nav.replace("Daily Prayer")
-
-        }
-      } catch (e) {
-        console.log(`failed to log in ${username}${password}`)
-        Alert.alert("Incorrect email or password")
-      }
-    }
+    
   }
+
+
   return (
     <SafeAreaView
       style={{
@@ -62,11 +32,11 @@ const Login = () => {
     >
       <Text style={styles.loginText}>LOG IN</Text>
       <View style={styles.inputContainer}>
-        <Text>Username: </Text>
+        <Text>username: </Text>
         <TextInput
           style={styles.input}
-          placeholder='Enter Username'
-          onChangeText={(usernameInput) => setUsername(usernameInput)}
+          placeholder='Enter username'
+          onChangeText={(usernameInput) => setusername(usernameInput)}
           defaultValue={username}
         />
       </View>
@@ -79,7 +49,7 @@ const Login = () => {
           defaultValue={password}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={GoToHomePage}>
+      <TouchableOpacity style={styles.button} onPress={checkLoginValid}>
         <Text>Login</Text>
       </TouchableOpacity>
     </SafeAreaView>
