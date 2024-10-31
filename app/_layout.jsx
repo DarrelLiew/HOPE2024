@@ -9,7 +9,6 @@ export const unstable_settings = {
 
   
 export default function RootLayout() {
-  console.log("HELLO")
   return (
     
     <UserProvider>

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from "@/constants/style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, Button, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../UserContext";
 import axios from "axios";
 const MyPrayer = () => {
@@ -14,10 +13,12 @@ const MyPrayer = () => {
   const [text, setText] = useState("");
   
   const createPrayer = async(prayerInput) => {
-    await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/myprayers/postprayer`), {
-      user_id: user_id ,
+    console.log(userId)
+    console.log(prayerInput)
+    await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/myprayers/postprayer`, {
+      user_id: userId ,
       prayer: prayerInput
-    }
+    })
 
     }
   
@@ -59,6 +60,7 @@ const MyPrayer = () => {
                 title='Submit'
                 color='midnightblue'
                 onPress={() => {
+                  
                   createPrayer(text)
                   setIsModalVisible(false);
                 }}
