@@ -3,10 +3,24 @@ import React, { useState } from "react";
 import styles from "@/constants/style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, Button, Pressable } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../UserContext";
+import axios from "axios";
 const MyPrayer = () => {
+  const {userId} = useUser()
+  // const {user_id} = route.params;
+  // console.log(`user id:${user_id}`)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [text, setText] = useState("");
+  
+  const createPrayer = async(prayerInput) => {
+    await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/myprayers/postprayer`), {
+      user_id: user_id ,
+      prayer: prayerInput
+    }
+
+    }
+  
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -45,12 +59,13 @@ const MyPrayer = () => {
                 title='Submit'
                 color='midnightblue'
                 onPress={() => {
+                  createPrayer(text)
                   setIsModalVisible(false);
                 }}
               />
               <View style={styles.buttonSpacing} />
               <Button
-                title='Close'
+                title='Cancel'
                 color='midnightblue'
                 onPress={() => {
                   setIsModalVisible(false);

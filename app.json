@@ -13,17 +13,14 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-
       "supportsTablet": true
-
     },
     "android": {
-
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
-
+      },
+      "package": "com.kenektas.hope2024"
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +29,6 @@
     },
     "plugins": [
       "expo-router"
-      
     ],
     "experiments": {
       "typedRoutes": true

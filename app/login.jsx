@@ -6,16 +6,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-
+import { useUser } from "./UserContext";
 
 const Login = () => {
+  const { setUserId } = useUser();
   const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
-  const nav = useNavigation()
+  const navigation = useNavigation()
 
   const checkLoginValid = async() =>{
-    console.log(process.env.EXPO_PUBLIC_BACKEND_URL)
-    axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/login`, {username,password}).then((res)=> console.log(res.data)).catch(e=> console.log(e))
+    await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/login`, {username,password})
+    .then(res=>{ 
+      if (res.data.status =="success"){
+
+        Alert.alert('Login Successful');
+        setUserId(res.data.user_id);
+        navigation.navigate("(tabs)")
+      }
+    })
+    .catch(e=> console.log(e))
     
     
   }
@@ -37,7 +46,7 @@ const Login = () => {
           style={styles.input}
           placeholder='Enter username'
           onChangeText={(usernameInput) => setusername(usernameInput)}
-          defaultValue={username}
+          value={username}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -46,7 +55,7 @@ const Login = () => {
           style={styles.input}
           placeholder='Enter Password'
           onChangeText={(passwordInput) => setPassword(passwordInput)}
-          defaultValue={password}
+          value={password}
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={checkLoginValid}>

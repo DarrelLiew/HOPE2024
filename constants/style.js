@@ -106,12 +106,12 @@ const styles = StyleSheet.create({
   myprayerinput:{
     height:300,
     margin:12,
-    padding:10,
+    padding:20,
     borderWidth:1,
     borderRadius:5,
     justifyContent: "center",
-    paddingLeft:30,
-    paddingRight:30
+
+    textAlignVertical: 'top'
   },
 
   submitprayerbutton:{
